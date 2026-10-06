@@ -1,6 +1,8 @@
 package com.erp.erp_system.product.service;
 
 
+import com.erp.erp_system.inventory.model.Inventory;
+import com.erp.erp_system.inventory.repositoty.InventoryRepository;
 import com.erp.erp_system.product.model.Product;
 import com.erp.erp_system.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final InventoryRepository inventoryRepository;
 
     // Injeção de dependência via construtor (Boa prática recomendada)
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository) {
         this.productRepository = productRepository;
+        this.inventoryRepository = inventoryRepository;
     }
 
     @Transactional
@@ -23,7 +27,16 @@ public class ProductService {
         if (productRepository.existsBySku(product.getSku())) {
             throw new IllegalArgumentException("Product with SKU " + product.getSku() + " already exists.");
         }
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+
+        // Cria automaticamente o registro de estoque zerado para o novo produto
+        Inventory inventory = new Inventory();
+        inventory.setProduct(savedProduct);
+        inventory.setQuantity(0);
+        inventory.setMinQuantity(5);
+        inventoryRepository.save(inventory);
+
+        return savedProduct;
     }
 
     public List<Product> getAllProducts() {
