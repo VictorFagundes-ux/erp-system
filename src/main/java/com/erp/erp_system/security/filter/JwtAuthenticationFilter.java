@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-
-@Component
+// ATENÇÃO: A anotação @Component foi removida para evitar o ciclo gerenciado pelo Spring,
+// pois o filtro agora é instanciado diretamente no SecurityConfig.
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
