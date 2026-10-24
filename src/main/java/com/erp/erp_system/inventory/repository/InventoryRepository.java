@@ -1,4 +1,4 @@
-package com.erp.erp_system.inventory.repositoty;
+package com.erp.erp_system.inventory.repository;
 
 
 import com.erp.erp_system.inventory.model.Inventory;

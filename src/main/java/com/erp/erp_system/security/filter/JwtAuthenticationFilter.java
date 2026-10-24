@@ -11,12 +11,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-// ATENÇÃO: A anotação @Component foi removida para evitar o ciclo gerenciado pelo Spring,
-// pois o filtro agora é instanciado diretamente no SecurityConfig.
+
+// SEM a anotação @Component aqui para evitar o ciclo
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -48,6 +47,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
+                // --- ADICIONE ESTAS LINHAS DE LOG AQUI ---
+                System.out.println("==================================================");
+                System.out.println(">>> USUÁRIO: " + username);
+                System.out.println(">>> AUTORIDADES DETECTADAS: " + userDetails.getAuthorities());
+                System.out.println("==================================================");
+                // ------------------------------------------
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

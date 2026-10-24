@@ -42,9 +42,9 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        String cleanRole = role != null && role.startsWith("ROLE_") ? role.substring(5) : role;
+        return List.of(new SimpleGrantedAuthority(cleanRole));
     }
-
     @Override
     public boolean isAccountNonExpired() { return true; }
 

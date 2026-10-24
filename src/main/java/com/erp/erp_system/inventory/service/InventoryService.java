@@ -3,7 +3,7 @@ package com.erp.erp_system.inventory.service;
 
 
 import com.erp.erp_system.inventory.model.Inventory;
-import com.erp.erp_system.inventory.repositoty.InventoryRepository;
+import com.erp.erp_system.inventory.repository.InventoryRepository;
 
 import com.erp.erp_system.product.service.ProductService;
 import org.springframework.stereotype.Service;
